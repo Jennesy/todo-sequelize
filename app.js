@@ -5,6 +5,10 @@ const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
 const bcrypt = require('bcryptjs')
 
+const db = require('./models')
+const User = db.User
+const Todo = db.Todo
+
 const app = express()
 const port = 3000
 
@@ -30,7 +34,9 @@ app.get('/users/register', (req, res) => {
 })
 
 app.post('/users/register', (req, res) => {
-  res.send('register')
+  const { name, email, password, confirmPassword } = req.body
+  User.create({ name, email, password })
+    .then(user => res.redirect('/'))
 })
 
 app.get('/users/logout', (req, res) => {
